@@ -1,6 +1,7 @@
+```mermaid
 erDiagram
-    User {
-        int id PK
+    USER {
+        INT id PK
         string name
         string email
         string password_hash
@@ -9,7 +10,7 @@ erDiagram
         string avatar_url
     }
 
-    Library {
+    LIBRARY {
         int id PK
         string phone
         string address
@@ -84,3 +85,4 @@ erDiagram
     User ||--o{ Notification : receives
 
     Library ||--o{ Library_cards : issues
+```
