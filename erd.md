@@ -1,88 +1,75 @@
 ```mermaid
 erDiagram
-    USER {
-        INT id PK
-        string name
-        string email
-        string password_hash
-        string phone
-        string role
-        string avatar_url
+
+    User {
+        INTEGER id PK
+        VARCHAR(25) name
+        VARCHAR(255) password_hash
+        VARCHAR(10) phone
+        INTEGER role FK
+        VARCHAR(255) email
     }
 
-    LIBRARY {
-        int id PK
-        string phone
-        string address
-        string schedule
+    Roles {
+        INTEGER id PK
+        VARCHAR(8) title
+    }
+
+    Library {
+        INTEGER id PK
+        VARCHAR(10) phone
+        JSONB coordinates
+        JSONB schedule
     }
 
     Book {
-        int id PK
-        int library_id FK
-        string isbn
-        string title
-        string author
-        string annotation
-        int year_published
-        string format
-        int amount
-        string license
-    }
-
-    Review {
-        int id PK
-        int user_id FK
-        int library_id FK
-        int rating
-        string comment
-    }
-
-    Hold {
-        int id PK
-        int user_id FK
-        int book_id FK
-        int library_id FK
-        date date_created
-    }
-
-    Loan {
-        int id PK
-        int book_id FK
-        int library_id FK
-        int user_id FK
-        date date_start
-        date date_end
-    }
-
-    Notification {
-        int id PK
-        int user_id FK
-        string type
-        string message
-        boolean is_read
-        datetime sent_at
+        INTEGER id PK
+        INTEGER library_id FK
+        VARCHAR(13) isbn
+        VARCHAR(255) title
+        VARCHAR(255) author
+        TEXT summary
+        INTEGER year_published
+        VARCHAR(5) format
+        INTEGER amount
+        VARCHAR(255) license
     }
 
     Library_cards {
-        int id PK
-        string code
-        int library_id FK
+        INTEGER id PK
+        INTEGER library_id FK
+        VARCHAR(255) code
+        BOOLEAN used
     }
 
-    Library ||--o{ Book : contains
-    User ||--o{ Review : writes
-    Library ||--o{ Review : receives
+    Hold {
+        INTEGER id PK
+        INTEGER user_id FK
+        INTEGER library_id FK
+        INTEGER book_id FK
+        DATE date_created
+    }
 
-    User ||--o{ Hold : places
-    Book ||--o{ Hold : reserved
-    Library ||--o{ Hold : manages
+    Loan {
+        INTEGER id PK
+        INTEGER user_id FK
+        INTEGER library_id FK
+        INTEGER book_id FK
+        DATE date_start
+        DATE date_end
+    }
 
-    User ||--o{ Loan : borrows
-    Book ||--o{ Loan : loaned
-    Library ||--o{ Loan : issues
+    Roles ||--o{ User : "has"
 
-    User ||--o{ Notification : receives
+    Library ||--o{ Book : "contains"
 
-    Library ||--o{ Library_cards : issues
+    Library ||--o{ Library_cards : "issues"
+
+    User ||--o{ Hold : "creates"
+    Book ||--o{ Hold : "reserved_in"
+    Library ||--o{ Hold : "manages"
+
+    User ||--o{ Loan : "borrows"
+    Book ||--o{ Loan : "loaned"
+    Library ||--o{ Loan : "issues"
 ```
